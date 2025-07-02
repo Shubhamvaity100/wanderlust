@@ -1,0 +1,36 @@
+<% layout('/layouts/boilerplate') -%>
+
+<!-- Reduced top space using mb-3 only -->
+<h1 class="mt-1 mb-3 fs-3 fw-semibold">All Listings</h1>
+
+<!-- Optional create button -->
+<!--
+<form method="GET" action="/listings/new" class="mb-3">
+  <button type="submit" class="btn btn-sm btn-primary">Create New Listing</button>
+</form>
+-->
+
+<div class="row gx-3 gy-4">
+  <% allListings.forEach(listing => { %>
+  <div class="col-lg-3 col-md-4 col-sm-6">
+    <div class="card h-100 shadow-sm">
+      <a href="/listings/<%= listing._id %>" class="text-decoration-none">
+        <div class="ratio ratio-4x3">
+          <img
+            src="<%= listing.image %>"
+            class="card-img-top"
+            alt="listing_image"
+            style="object-fit: cover"
+          />
+        </div>
+      </a>
+      <div class="card-body p-2">
+        <h6 class="card-title mb-1 fw-bold"><%= listing.title %></h6>
+        <p class="card-text text-muted small mb-0">
+          &#8377;<%= listing.price.toLocaleString("en-IN") %> / Night
+        </p>
+      </div>
+    </div>
+  </div>
+  <% }) %>
+</div>

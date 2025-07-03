@@ -20,7 +20,7 @@ const validateListing = (req, res, next) => {
 };
 
 // Listings index
-router.get("/", isLoggedIn,wrapAsync(async (req, res) => {
+router.get("/",wrapAsync(async (req, res) => {
   const allListings = await Listing.find({});
   res.render("listings/index", { allListings });
 }));
@@ -38,12 +38,13 @@ router.get("/:id", wrapAsync(async (req, res) => {
     throw new ExpressError(400, "Invalid listing ID format");
   }
 
-  const listing = await Listing.findById(id).populate("reviews");
+  const listing = await Listing.findById(id).populate("reviews").populate("owner");
   if (!listing) {
     req.flash("error", "Listing you requested could not be found");
     res.redirect("/listings");
     // throw new ExpressError(404, "Listing not found");
   }
+  console.log(listing);
 
   res.render("listings/show", { listing });
 }));
@@ -51,6 +52,7 @@ router.get("/:id", wrapAsync(async (req, res) => {
 // Create listing
 router.post("/", validateListing, wrapAsync(async (req, res) => {
   const newlisting = new Listing(req.body.listing);
+  newlisting.owner = req.user._id;
   await newlisting.save();
   req.flash("success", "Successfully created a new listing!");
   res.redirect("/listings");

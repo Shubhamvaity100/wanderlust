@@ -22,6 +22,10 @@ app.get("/",(req,res)=>{
 
 const initDB=async()=>{
     await Listing.deleteMany({});
+    initData.data=initData.data.map((obj)=>({
+        ...obj,
+        owner:'686698e6cfa977d39a2dc981',
+    }))
     await Listing.insertMany(initData.data);
     console.log("data was initialized");
 };

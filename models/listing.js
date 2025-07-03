@@ -30,6 +30,11 @@ const listingSchema = new Schema({
     },
   ],
 
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: "User", // Reference to the User model
+  },
+
 
 });
 
